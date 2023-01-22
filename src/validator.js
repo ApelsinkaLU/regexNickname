@@ -4,16 +4,19 @@ export default class Validator {
     }
 
     validateUserName() {
-        const checkSymbol = /^[a-zA-Z0-9-_]+$/;
-        const checkOrder = /^[A-Z][A-Z0-9-_]+[A-Z]$/i;
-        const checkNum = /\d{4,}/;
+        const expectRightUserName = /^[-_\w\d]+$/; //Допустимы только латинские буквы, символы тире -, подчёркивания _ и цифры (0-9)
+        const expextRightStartSymbols = /^[^-_\d]/; //Имя не должно начинаться цифрами, символами подчёркивания или тире
+        const expectRightEndSymbols = /.+[^-_\d]$/; //Имя не должно заканчиваться цифрами, символами подчёркивания или тире
+        const exeptThreeNumbersInRow = /\d{4,}/; //Имя не должно содержать подряд более трёх цифр
 
-        if (!checkSymbol.test(this.name)) {
+        if (!expectRightUserName.test(this.name)) {
             throw new Error('Допустимы только латинские буквы, символы тире -, подчёркивания _ и цифры (0-9)');
-        }
-
-        if (!checkOrder.test(this.name) || !checkNum.test(this.name)) {
-            throw new Error('Имя не должно содержать подряд более трёх цифр, а также начинаться и заканчиваться цифрами, символами подчёркивания или тире');
+        } else if (!expextRightStartSymbols.test(this.name)) {
+            throw new Error('Имя не должно начинаться цифрами, символами подчёркивания или тире');
+        } else if (!expectRightEndSymbols.test(this.name)) {
+            throw new Error('Имя не должно заканчиваться цифрами, символами подчёркивания или тире');
+        } else if (!exeptThreeNumbersInRow.test(this.name)) {
+            throw new Error('Имя не должно содержать подряд более трёх цифр');
         }
     }
 }
